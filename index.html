@@ -29,6 +29,7 @@
   @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
   @keyframes scrollAnim { 0%{transform:scaleY(0);transform-origin:top} 50%{transform:scaleY(1);transform-origin:top} 51%{transform:scaleY(1);transform-origin:bottom} 100%{transform:scaleY(0);transform-origin:bottom} }
   @keyframes modalIn { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes tabFadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
   .hero-date     { font-size:.7rem; font-weight:300; letter-spacing:.4em; color:var(--gold); text-transform:uppercase; margin-bottom:1.5rem; position:relative; opacity:0; animation:fadeUp .8s ease forwards .3s; }
   .hero-title    { font-family:'Cormorant Garamond',serif; font-size:clamp(3.5rem,10vw,7rem); font-weight:300; line-height:1; position:relative; opacity:0; animation:fadeUp .8s ease forwards .6s; }
@@ -46,11 +47,30 @@
   .section-label { font-size:.65rem; letter-spacing:.45em; color:var(--gold); text-transform:uppercase; font-weight:300; margin-bottom:1.5rem; }
   .intro p { font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:300; line-height:1.9; color:rgba(251,247,242,.75); font-style:italic; }
 
-  .main { padding:2rem 2rem 5rem; max-width:1200px; margin:0 auto; }
+  .tabs-wrapper { max-width:1200px; margin:0 auto 0; padding:0 2rem 2.5rem; }
+  .tabs-inner { display:flex; align-items:stretch; border-bottom:1px solid rgba(201,168,76,.18); gap:0; overflow-x:auto; scrollbar-width:none; }
+  .tabs-inner::-webkit-scrollbar { display:none; }
 
+  .tab-btn { position:relative; background:none; border:none; color:rgba(251,247,242,.32); font-family:'Josefin Sans',sans-serif; font-size:.6rem; font-weight:300; letter-spacing:.45em; text-transform:uppercase; padding:.9rem 1.6rem; cursor:pointer; transition:color .3s ease; white-space:nowrap; flex-shrink:0; display:flex; align-items:center; gap:.55rem; }
+  .tab-btn::after { content:''; position:absolute; bottom:-1px; left:0; right:0; height:1px; background:var(--gold); transform:scaleX(0); transition:transform .35s cubic-bezier(.4,0,.2,1); transform-origin:left; }
+  .tab-btn:hover { color:rgba(251,247,242,.65); }
+  .tab-btn.active { color:var(--gold-light); }
+  .tab-btn.active::after { transform:scaleX(1); }
+
+  .tab-count { display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; background:rgba(201,168,76,.12); border:1px solid rgba(201,168,76,.22); font-size:.45rem; letter-spacing:.05em; color:var(--gold); transition:background .3s, border-color .3s; flex-shrink:0; }
+  .tab-btn.active .tab-count { background:rgba(201,168,76,.22); border-color:rgba(201,168,76,.5); }
+  .tabs-separator { width:1px; background:rgba(201,168,76,.1); align-self:stretch; margin:6px 0; flex-shrink:0; }
+
+  .result-bar { max-width:1200px; margin:0 auto; padding:.8rem 2rem 1.5rem; display:flex; align-items:center; gap:.9rem; }
+  .result-bar-line { flex:1; height:1px; background:rgba(201,168,76,.07); }
+  .result-bar-text { font-size:.5rem; letter-spacing:.38em; color:rgba(201,168,76,.4); text-transform:uppercase; white-space:nowrap; }
+
+  .main { padding:0 2rem 5rem; max-width:1200px; margin:0 auto; }
   .gifts-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1.5px; background:rgba(201,168,76,.1); }
 
   .gift-card { background:var(--black); position:relative; overflow:hidden; cursor:pointer; transition:all .4s ease; }
+  .gift-card.hidden { display:none; }
+  .gift-card.visible { animation:tabFadeIn .35s ease forwards; }
   .gift-card:hover { z-index:2; transform:scale(1.02); box-shadow:0 20px 60px rgba(107,42,42,.5); }
 
   .gift-img-wrap { width:100%; height:240px; overflow:hidden; position:relative; background:#1a1010; }
@@ -79,40 +99,34 @@
 
   .modal-overlay { position:fixed; inset:0; background:rgba(8,4,4,.87); z-index:1000; display:flex; align-items:center; justify-content:center; padding:1.5rem; backdrop-filter:blur(8px); opacity:0; pointer-events:none; transition:opacity .3s ease; }
   .modal-overlay.open { opacity:1; pointer-events:all; }
-
   .modal { background:#140c0c; border:1px solid rgba(201,168,76,.18); max-width:460px; width:100%; position:relative; animation:modalIn .3s ease forwards; box-shadow:0 40px 80px rgba(0,0,0,.8); }
-
   .modal-head { padding:1.6rem 1.8rem 1.4rem; border-bottom:1px solid rgba(201,168,76,.1); }
   .modal-head-label { font-size:.52rem; letter-spacing:.4em; color:var(--gold); text-transform:uppercase; margin-bottom:.5rem; }
   .modal-head-name  { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:400; line-height:1.25; margin-bottom:.3rem; }
   .modal-head-price { font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--gold-light); font-weight:300; }
-
   .modal-close { position:absolute; top:1.1rem; right:1.2rem; background:none; border:none; color:rgba(251,247,242,.3); font-size:.95rem; cursor:pointer; line-height:1; transition:color .2s; }
   .modal-close:hover { color:var(--gold); }
-
   .modal-body { padding:1.5rem 1.8rem 2rem; }
-
   .pix-block { display:flex; gap:1.4rem; align-items:flex-start; background:rgba(201,168,76,.04); border:1px solid rgba(201,168,76,.1); padding:1.2rem; }
-
   .pix-qr { background:#fff; padding:8px; flex-shrink:0; width:130px; height:130px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
   .pix-qr img { width:114px; height:114px; display:block; object-fit:cover; }
-
   .pix-fields { flex:1; min-width:0; }
-
   .pix-field { margin-bottom:.85rem; }
   .pix-field:last-child { margin-bottom:0; }
   .pix-field-label { font-size:.48rem; letter-spacing:.38em; color:rgba(201,168,76,.55); text-transform:uppercase; margin-bottom:.28rem; }
   .pix-field-val { font-size:.68rem; color:var(--white); letter-spacing:.02em; background:rgba(255,255,255,.03); border:1px solid rgba(201,168,76,.1); padding:.4rem .55rem; display:flex; justify-content:space-between; align-items:center; gap:.4rem; word-break:break-all; }
-
   .copy-btn { background:none; border:1px solid rgba(201,168,76,.28); color:var(--gold); font-family:'Josefin Sans',sans-serif; font-size:.42rem; letter-spacing:.25em; text-transform:uppercase; padding:.25rem .55rem; cursor:pointer; white-space:nowrap; transition:all .25s; flex-shrink:0; }
   .copy-btn:hover { background:rgba(201,168,76,.1); border-color:var(--gold); }
   .copy-btn.copied { color:#4ECD8C; border-color:#4ECD8C; }
-
   .pix-tip { margin-top:1.1rem; font-size:.58rem; font-weight:200; letter-spacing:.04em; color:rgba(251,247,242,.28); text-align:center; line-height:1.7; }
 
   footer { padding:5rem 2rem; text-align:center; border-top:1px solid rgba(201,168,76,.1); margin-top:2rem; }
   .footer-names { font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:300; color:var(--gold-light); margin-bottom:1rem; }
   footer p { font-size:.65rem; font-weight:200; letter-spacing:.35em; color:rgba(251,247,242,.3); text-transform:uppercase; }
+
+  .empty-state { display:none; grid-column:1/-1; padding:5rem 2rem; text-align:center; }
+  .empty-state.show { display:block; }
+  .empty-state p { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:300; font-style:italic; color:rgba(251,247,242,.25); }
 
   @media (max-width:600px) {
     .gifts-grid { grid-template-columns:1fr; }
@@ -120,6 +134,7 @@
     .pix-block { flex-direction:column; align-items:center; }
     .pix-qr { width:150px; height:150px; }
     .pix-qr img { width:134px; height:134px; }
+    .tab-btn { padding:.8rem 1rem; letter-spacing:.3em; }
   }
 </style>
 </head>
@@ -139,8 +154,46 @@
   <p>Sua presença em nosso dia especial já é o maior presente. Mas, se desejar nos presentear, preparamos esta lista com muito carinho para ajudá-los a escolher algo que vai fazer parte da nossa nova vida juntos.</p>
 </section>
 
+<div class="tabs-wrapper">
+  <div class="tabs-inner" role="tablist">
+    <button class="tab-btn active" data-filter="all" role="tab" aria-selected="true" onclick="setTab(this,'all')">
+      Todos <span class="tab-count" id="count-all"></span>
+    </button>
+    <div class="tabs-separator"></div>
+    <button class="tab-btn" data-filter="cozinha" role="tab" aria-selected="false" onclick="setTab(this,'cozinha')">
+      Cozinha <span class="tab-count" id="count-cozinha"></span>
+    </button>
+    <div class="tabs-separator"></div>
+    <button class="tab-btn" data-filter="viagem" role="tab" aria-selected="false" onclick="setTab(this,'viagem')">
+      Viagem &amp; Lazer <span class="tab-count" id="count-viagem"></span>
+    </button>
+    <div class="tabs-separator"></div>
+    <button class="tab-btn" data-filter="casa" role="tab" aria-selected="false" onclick="setTab(this,'casa')">
+      Casa &amp; Decor <span class="tab-count" id="count-casa"></span>
+    </button>
+    <div class="tabs-separator"></div>
+    <button class="tab-btn" data-filter="cama" role="tab" aria-selected="false" onclick="setTab(this,'cama')">
+      Cama &amp; Banho <span class="tab-count" id="count-cama"></span>
+    </button>
+    <div class="tabs-separator"></div>
+    <button class="tab-btn" data-filter="lazer" role="tab" aria-selected="false" onclick="setTab(this,'lazer')">
+      Lazer <span class="tab-count" id="count-lazer"></span>
+    </button>
+  </div>
+</div>
+
+<div class="result-bar">
+  <div class="result-bar-line"></div>
+  <div class="result-bar-text" id="resultText"></div>
+  <div class="result-bar-line"></div>
+</div>
+
 <div class="main">
-  <div class="gifts-grid" id="giftsGrid"></div>
+  <div class="gifts-grid" id="giftsGrid">
+    <div class="empty-state" id="emptyState">
+      <p>Nenhum presente nesta categoria ainda.</p>
+    </div>
+  </div>
 </div>
 
 <footer>
@@ -148,36 +201,24 @@
   <p>Com amor · Agosto 2026</p>
 </footer>
 
-<!-- PIX MODAL -->
 <div class="modal-overlay" id="pixModal" onclick="handleOverlayClick(event)">
   <div class="modal" role="dialog" aria-modal="true">
     <button class="modal-close" onclick="closeModal()" aria-label="Fechar">✕</button>
-
     <div class="modal-head">
       <div class="modal-head-label">Presentear via PIX</div>
       <div class="modal-head-name"  id="modalGiftName"></div>
       <div class="modal-head-price" id="modalGiftPrice"></div>
     </div>
-
     <div class="modal-body">
       <div class="pix-block">
-
-        <!-- ============================================ -->
-        
-        <!-- ============================================ -->
         <div class="pix-qr">
           <img src="https://i.imgur.com/czsamXq.jpeg" alt="QR Code PIX">
         </div>
-        <!-- ============================================ -->
-
         <div class="pix-fields">
           <div class="pix-field">
             <div class="pix-field-label">Chave PIX</div>
             <div class="pix-field-val">
-              <!-- ============================================ -->
-              -->
-              <span id="pixKeyDisplay"></span>
-              <!-- ============================================ -->
+              <span id="pixKeyDisplay">980c74dd-1cf0-4295-8b5d-23f82e1263b5</span>
               <button class="copy-btn" id="copyKeyBtn" onclick="copyText('pixKeyDisplay','copyKeyBtn')">Copiar</button>
             </div>
           </div>
@@ -189,95 +230,237 @@
 </div>
 
 <script>
-const CAT = { cozinha:"Cozinha", casa:"Casa & Decor", cama:"Cama & Banho", viagem:"Viagem & Lazer" };
+const CAT = {
+  cozinha:"Cozinha",
+  casa:"Casa & Decor",
+  cama:"Cama & Banho",
+  viagem:"Viagem & Lazer",
+  lazer:"Lazer",
+  praia:"Praia & Lazer"
+};
 
 const gifts = [
-  { id:1,  name:"Le Creuset — Conjunto Antiaderente PRO 6 Peças", category:"cozinha", price:1890, desc:"Conjunto 6 peças da linha Toughened PRO, 4× mais resistentes. Ideais para grelhar, refogar e preparar no dia a dia.", img:"https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80" },
-  { id:2,  name:"KitchenAid Artisan — Batedeira Vermelha 110V",   category:"cozinha", price:2407, desc:"Ícone de design com motor de ferro fundido, 10 velocidades e tigela 4,83L. Perfeita para massas, pães e sobremesas.", img:"https://images.unsplash.com/photo-1585515320310-259814833e62?w=600&q=80" },
-  { id:3,  name:"KitchenAid Artisan — Batedeira Black Matte",     category:"cozinha", price:2529, desc:"Acabamento fosco preto com corpo de metal e motor de ferro fundido. Movimento planetário 59 pontos de contato.", img:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80" },
-  { id:4,  name:"Aparelho de Jantar Porcelana Oxford 30 Peças",   category:"cozinha", price:890,  desc:"Porcelana refinada com design elegante para jantares especiais. Resistente e sofisticado para receber amigos e família.", img:"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQgJ5sdjl4ug1VKF6SNr2lsVNOo5bnj3JBu4Pzhcwz5Ye2vdzGMLD2AkyvrkD58m7Z6FOlQ0eZ5Nj318uR1TnHjM-QBgqFx2zIYKv37201S_10a_OY0Qc5peg" },
-  { id:5,  name:"Jogo de Facas Profissional em Aço Inox",         category:"cozinha", price:480,  desc:"Conjunto completo de facas forjadas em aço inox com suporte. Precisão e durabilidade para todos os cortes na cozinha.", img:"https://images.unsplash.com/photo-1593618998160-e34014e67546?w=600&q=80" },
-  { id:6,  name:"Jogo de Cama King — 300 Fios Algodão Egípcio",   category:"cama",    price:849,  desc:"Jogo king 4 peças By The Bed em 100% algodão egípcio 300 fios single picking. Toque superior ao 600 fios nacional.", isNew:true, img:"https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80" },
-  { id:7,  name:"Jogo de Cama King — 600 Fios Cetim Egípcio",     category:"cama",    price:520,  desc:"Lençóis cetim king em algodão egípcio de fibra longa. Toque sedoso, resistência a bolinhas e desbotamento.", img:"https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=600&q=80" },
-  { id:8,  name:"Kit 5 Toalhas de Banho Padrão Hotel",            category:"cama",    price:110,  desc:"Kit 5 toalhas 70×130cm com toque extra macio, tratamento Tumbler, costura dupla reforçada e alta absorção.", img:"https://pontaodasfabricas.cdn.magazord.com.br/img/2025/07/produto/14335/02-jogo-5-toalhas-hotel-gold-450-g-m-alta-absorcao-banho-rosto-e-piso-lufamar.png?ims=600x600" },
-  { id:9,  name:"Kit 4 Toalhas Karsten Algodão Premium",          category:"cama",    price:280,  desc:"Kit 4 toalhas Karsten 67×135cm em algodão com acabamento Cotton e antipilling. Elegância e conforto diários.", img:"https://down-br.img.susercontent.com/file/br-11134207-7r98o-lwhjfksr2yky4b" },
-  { id:10, name:"Adega Climatizada — 30 Garrafas",                category:"casa",    price:2600, desc:"Controle digital de temperatura, iluminação LED e porta vidro duplo antiUV. Para apreciadores de bons vinhos.", isNew:true, img:"https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80" },
-  { id:11, name:"Conjunto de Vasos Cerâmica Artesanal",           category:"casa",    price:280,  desc:"Trio de vasos feitos à mão com acabamento rústico moderno. Tons de bege, terracota e marrom para decoração.", img:"https://images.unsplash.com/photo-1612965607446-25e1332775ae?w=600&q=80" },
-  { id:12, name:"Lustre Pendente Dourado — Sala de Jantar",       category:"casa",    price:1100, desc:"Luminária pendente com acabamento dourado e difusor em vidro. Design refinado para ambientes de 15 a 25m².", img:"https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=600&q=80" },
-  { id:13, name:"Tapete de Sala em Lã Natural — 2×3m",           category:"casa",    price:1850, desc:"Tapete artesanal com motivos geométricos em lã natural. Tons de vermelho profundo e dourado, sofisticação total.", img:"https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80" },
-  { id:14, name:"Poltrona com Puf — Couro Legítimo",              category:"casa",    price:3800, desc:"Poltrona lounge com puf em couro legítimo e base em madeira moldada. Conforto e design atemporal para qualquer sala.", img:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" },
-  { id:15, name:"🏝️ Lua de Mel — Contribuição Livre",            category:"viagem",  price:0,    desc:"Ajude-nos a realizar o sonho da nossa lua de mel! Qualquer contribuição será usada integralmente para essa viagem inesquecível.", isNew:true, custom:true, img:"https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=600&q=80" },
-  { id:16, name:"Mala de Viagem Hardcase Premium Grande",         category:"viagem",  price:1200, desc:"Mala rígida com rodinhas 360° silenciosas, cadeado TSA integrado e capacidade expandível para longas viagens.", img:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&q=80" },
-  { id:17, name:"Câmera Mirrorless Sony Alpha",                   category:"viagem",  price:4800, desc:"Para eternizar cada momento juntos. Sensor de alta resolução, vídeo 4K e lente intercambiável. Memórias para sempre.", isNew:true, img:"https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&q=80" },
-  { id:18, name:"Kit Churrasco Premium Tramontina Inox",          category:"viagem",  price:480,  desc:"Kit completo para churrascos inesquecíveis. Facas, espetos e garfo em aço inox com cabo de madeira nobre.", img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" }
+  { id:1,  name:"Decorações", category:"casa", price:78.00, desc:"", img:"https://i.imgur.com/m2pyFd8.jpeg" },
+  { id:2,  name:"Adoção de um animal durante nossa viagem", category:"viagem", price:157.96, desc:"", img:"https://i.pinimg.com/736x/7b/79/da/7b79da451dc62e350f09d910084a205c.jpg" },
+  { id:3,  name:"Malas", category:"viagem", price:132, desc:"", img:"https://i.pinimg.com/736x/a1/cc/1b/a1cc1b3a6a476aa473aef2a5773a8247.jpg" },
+  { id:4,  name:"Aluguel de bicicletas para um passeio romântico", category:"viagem", price:145.50, desc:"", img:"https://i.pinimg.com/1200x/80/5e/1a/805e1a2dbf5f58af1e4c6e1d874b32bd.jpg" },
+  { id:5,  name:"Air Fryer", category:"cozinha", price:612.74, desc:"", img:"https://static1.efacil.com.br/wcsstore//AuroraStorefrontAssetStore/PDP/britania/2224489_02.jpg" },
+  { id:6,  name:"Ajude a dar uma MEGA engordada no nosso porquinho", category:"casa", price:591.97, desc:"", img:"https://i.pinimg.com/1200x/8a/0d/43/8a0d4301183710eb36d54b45dfc05d7d.jpg" },
+  { id:7,  name:"Aluguel de cadeiras na praia", category:"viagem", price:72.82, desc:"", img:"https://i.pinimg.com/1200x/af/22/bc/af22bcc1066789bd850285659b250577.jpg" },
+  { id:8,  name:"Aparelho de fondue", category:"cozinha", price:78, desc:"", img:"https://i.pinimg.com/736x/66/df/0d/66df0d4cb18efa529d7bbc250ce655c3.jpg" },
+  { id:9,  name:"Aparelho de jantar", category:"cozinha", price:267, desc:"", img:"https://i.pinimg.com/736x/49/87/5f/49875fa01cb72495d2f82811eae3c6e1.jpg" },
+  { id:10, name:"Assadeira Marinex Oval de Vidro - Seletta", category:"cozinha", price:69.90, desc:"", img:"https://i.pinimg.com/736x/67/86/c8/6786c81c2ee0e7c6bf700514e3928b9a.jpg" },
+  { id:11, name:"Balança digital de cozinha", category:"cozinha", price:76.97, desc:"", img:"https://i.pinimg.com/1200x/81/6b/69/816b6947dc3cb62e572a67c0f6ecebf0.jpg" },
+  { id:12, name:"Banho e massagem relaxante", category:"cama", price:366.66, desc:"", img:"https://i.pinimg.com/1200x/e2/ee/f9/e2eef93e31ecdeae67785193460f7be0.jpg" },
+  { id:13, name:"Barbeador elétrico", category:"lazer", price:145.50, desc:"", img:"https://i.pinimg.com/736x/8b/86/c2/8b86c20c4a032e9c5008a829781c4e02.jpg" },
+  { id:14, name:"Batata frita na praia", category:"viagem", price:67, desc:"", img:"https://i.pinimg.com/736x/6d/7b/08/6d7b0828920a46525bdbce2a2539de8c.jpg" },
+  { id:15, name:"🏝️ Lua de Mel — Contribuição Livre", category:"viagem", price:0, desc:"Ajude-nos a realizar o sonho da nossa lua de mel! Qualquer contribuição será usada integralmente para essa viagem inesquecível.", isNew:true, custom:true, img:"https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=600&q=80" },
+  { id:16, name:"Batedeira", category:"cozinha", price:436.23, desc:"", img:"https://i.pinimg.com/1200x/c7/e8/8a/c7e88aa34b552b7611e25c5a508bb685.jpg" },
+  { id:17, name:"Bolo de cenoura semanal para a noiva", category:"cozinha", price:118.50, desc:"", img:"https://i.pinimg.com/1200x/9c/24/36/9c2436585fc65f3b018b3871ba662e57.jpg" },
+  { id:18, name:"Calmante para quando as dividas chegarem", category:"casa", price:93.58, desc:"", img:"https://i.pinimg.com/736x/8d/34/ed/8d34ed8c61f9eb73b3f517664d05b795.jpg" },
+  { id:19, name:"Cama box + colchão queen size", category:"cama", price:2201.36, desc:"", img:"https://i.pinimg.com/736x/c7/a6/50/c7a65078107fe8df43331c59429f8356.jpg" },
+  { id:20, name:"Cesto de lixo", category:"casa", price:125.77, desc:"", img:"https://i.pinimg.com/736x/3b/c0/1b/3bc01ba5a7c09b15de25afd518411f23.jpg" },
+  { id:201, name:"Churrasqueira Elétrica Cadance 1200W Inox", category:"cozinha", price:409.23, desc:"", img:"https://i.pinimg.com/736x/fa/6e/62/fa6e625a7d0075649b88cf0c6100b526.jpg" },
+  { id:21, name:"Conjunto de potes para mantimentos 5 peças c/ tampa", category:"cozinha", price:117.98, desc:"", img:"https://i.pinimg.com/1200x/b0/f0/0e/b0f00e2eb5caa9d24fc12c54a459fb60.jpg" },
+  { id:22, name:"Conjunto de copos", category:"cozinha", price:56.20, desc:"", img:"https://i.pinimg.com/736x/fe/b2/0b/feb20b989f772bcbd04542b7da571444.jpg" },
+  { id:23, name:"Conjunto de facas", category:"cozinha", price:228.56, desc:"", img:"https://i.pinimg.com/1200x/8d/41/41/8d4141b7e2d469dd3208790f805d8edc.jpg" },
+  { id:24, name:"Conjunto de panelas 6 pçs incluso panela de pressão 4,5L - Rochedo", category:"cozinha", price:374.85, desc:"", img:"https://i.pinimg.com/736x/37/8b/c1/378bc16ef32f1b8943fdd90c70407cd6.jpg" },
+  { id:25, name:"Conjunto de panelas em aço inox, 10 peças - All-Clad", category:"cozinha", price:956.32, desc:"", img:"https://i.pinimg.com/736x/5e/7e/ca/5e7ecaa5fa242e580ac65f9ba43a31ea.jpg" },
+  { id:26, name:"Conjunto de talheres", category:"cozinha", price:67, desc:"", img:"https://i.pinimg.com/736x/0b/0b/d6/0b0bd6e1aca954d8d260eb2f4f58d494.jpg" },
+  { id:27, name:"Conjunto suplar", category:"cozinha", price:100.85, desc:"", img:"https://i.pinimg.com/736x/e6/79/3e/e6793e046ed4b9de848dfd2823d4ba50.jpg" },
+  { id:28, name:"Crédito de celular para os noivos ligarem para seus parentes", category:"viagem", price:167.35, desc:"", img:"https://i.pinimg.com/736x/13/f8/53/13f853433160e9dc64e0ea7af2c2d1cf.jpg" },
+  { id:29, name:"Decoração romântica para noite de núpcias", category:"viagem", price:242.06, desc:"", img:"https://i.pinimg.com/1200x/86/9b/f4/869bf4e961b2a7a6decf827a7dc8c5f9.jpg" },
+  { id:30, name:"Desodorante para o noivo não esquecer de usar", category:"cama", price:49.45, desc:"", img:"https://i.pinimg.com/736x/4c/29/c5/4c29c53c779683aa2a012c4d9eafb011.jpg" },
+  { id:31, name:"Escorredor 20 pratos", category:"cozinha", price:123.58, desc:"", img:"https://i.pinimg.com/736x/08/8f/90/088f90d34672b4e26a2ebd74cd393f35.jpg" },
+  { id:32, name:"Filtro de barro 4L", category:"cozinha", price:207.80, desc:"", img:"https://i.pinimg.com/736x/fc/1d/17/fc1d1777df17ea7ff9d34250dcfda977.jpg" },
+  { id:33, name:"Forma de gelo redonda", category:"cozinha", price:66.59, desc:"", img:"https://i.pinimg.com/1200x/7e/30/de/7e30dedd27a3b2474f28f9527e8e66b6.jpg" },
+  { id:34, name:"Forno à gás de embutir", category:"cozinha", price:1680.13, desc:"", img:"https://i.pinimg.com/1200x/0e/87/22/0e872268b2a5f70681e3cd6ad22fe17e.jpg" },
+  { id:35, name:"Foto debaixo d'agua", category:"viagem", price:112.27, desc:"", img:"https://i.pinimg.com/736x/05/b4/6a/05b46ada45b93c39a711a69b6c30bcae.jpg" },
+  { id:36, name:"Garantir que a noiva faça um jantar delicioso para o noivo", category:"cozinha", price:103.97, desc:"", img:"https://i.pinimg.com/1200x/0d/06/4d/0d064d3506e6e0d36d4d450efe1e4543.jpg" },
+  { id:37, name:"Geladeira", category:"cozinha", price:4582.21, desc:"", img:"https://i.pinimg.com/736x/37/17/06/371706544734c8bfb5057f680709487b.jpg" },
+  { id:38, name:"Guarda roupa", category:"cama", price:1734.12, desc:"", img:"https://i.pinimg.com/1200x/86/50/28/865028100f2931fbe1b520558f00f08b.jpg" },
+  { id:39, name:"Jantar romântico", category:"lazer", price:591.97, desc:"", img:"https://i.pinimg.com/736x/15/9b/f6/159bf6ced9ed6ac275f41b52faa1b018.jpg" },
+  { id:391, name:"Jantar temático japonês", category:"lazer", price:366.66, desc:"", img:"https://i.pinimg.com/736x/6d/11/76/6d1176c584604163c3126f2c6e2f701c.jpg" },
+  { id:40, name:"Jarra", category:"cozinha", price:157.96, desc:"", img:"https://i.pinimg.com/736x/cd/f5/0f/cdf50f36dde5ae5a89c144c7380ee53a.jpg" },
+  { id:41, name:"Jogo americano", category:"cozinha", price:78.01, desc:"", img:"https://i.pinimg.com/1200x/81/a9/04/81a904247aa3bc7c2834e8ac910b42b3.jpg" },
+  { id:42, name:"Jogo aparelho de jantar 42 peças", category:"cozinha", price:294.56, desc:"", img:"https://i.pinimg.com/1200x/24/53/5a/24535a3a44194b6726d34b04bab96371.jpg" },
+  { id:43, name:"Jogo copos cinza 6 peças SM Aruba", category:"cozinha", price:65.55, desc:"", img:"https://i.pinimg.com/736x/17/a9/a4/17a9a4882fe79bff93d1bb0b7d0b3c01.jpg" },
+  { id:44, name:"Jogo de assadeiras 3 peças", category:"cozinha", price:187.03, desc:"", img:"https://i.pinimg.com/736x/cf/07/08/cf0708361f4291996393b892130d9d25.jpg" },
+  { id:45, name:"Jogo de banho buddemeyer hera 5 pçs bege", category:"cama", price:226.37, desc:"", img:"https://i.pinimg.com/1200x/69/41/b0/6941b0aefa12b4a125cb315d8110a324.jpg" },
+  { id:46, name:"Jogo de cama casal - 4 peças", category:"cama", price:435.19, desc:"", img:"https://i.pinimg.com/736x/ab/d4/1d/abd41da2f4432a9142b55028d42e587c.jpg" },
+  { id:47, name:"Jogo de cama queen", category:"cama", price:623.12, desc:"", img:"https://i.pinimg.com/736x/aa/ad/c7/aaadc76a70e0b6d960d2016c910b0571.jpg" },
+  { id:48, name:"Jogo de taça para vinho - 6 peças", category:"cozinha", price:163.67, desc:"", img:"https://i.pinimg.com/736x/c7/08/c2/c708c2cebdba8279f5a41a6899cd1a84.jpg" },
+  { id:49, name:"Jogo de toalha de banho madalena azul 5 peças - Casa & Conforto", category:"cama", price:210.15, desc:"", img:"https://i.pinimg.com/736x/c9/37/8a/c9378a0c352604d152f1f78941843884.jpg" },
+  { id:50, name:"Jogo de toalhas degrade azul Home Design Star 4 peças", category:"cama", price:98.11, desc:"", img:"https://i.pinimg.com/736x/51/b4/6c/51b46cf3315618804703f7c88726bb08.jpg" },
+  { id:51, name:"Jogo organizador banheiro", category:"cama", price:123.69, desc:"", img:"https://i.pinimg.com/736x/28/87/8e/28878e2cd3686fd222023b5b50068ee8.jpg" },
+  { id:52, name:"Jogo de tabuleiro para diversão da família", category:"lazer", price:145.50, desc:"", img:"https://i.pinimg.com/736x/81/b0/ec/81b0ec08b65d84d7ef258d1887c2cd95.jpg" },
+  { id:53, name:"Kit acessórios para banheiro", category:"cama", price:157.84, desc:"", img:"https://i.pinimg.com/1200x/22/5b/57/225b57fd0d531cfa6b5f81dc25a822c5.jpg" },
+  { id:54, name:"Kit churrasco tramontina", category:"cozinha", price:152.13, desc:"", img:"https://i.pinimg.com/736x/f1/83/db/f183dbed5bcce14a6205c9bc3e69952e.jpg" },
+  { id:55, name:"Kit pano de prato", category:"cozinha", price:55.16, desc:"", img:"https://i.pinimg.com/736x/3f/13/e5/3f13e5c5cf99266214103b02b7775bba.jpg" },
+  { id:56, name:"Kit porta copos", category:"cozinha", price:48.93, desc:"", img:"https://i.pinimg.com/1200x/ba/2d/5a/ba2d5abd2a54b4c9d242ad129a99574f.jpg" },
+  { id:57, name:"Kit quadro decorativo personalizado", category:"casa", price:167.30, desc:"", img:"https://i.pinimg.com/736x/5d/11/b7/5d11b7c60ea505a780bbbd1aee0e2519.jpg" },
+  { id:58, name:"Conjunto de renda para noiva arrasar na lua de mel", category:"cama", price:280.48, desc:"", img:"https://i.pinimg.com/736x/fa/cc/da/faccda9efbb8461dac233a612b5267b3.jpg" },
+  { id:59, name:"Lava pratos", category:"cozinha", price:850.51, desc:"", img:"https://i.pinimg.com/736x/56/e2/c0/56e2c0311759e538c4f3b880a2ae8ffa.jpg" },
+  { id:60, name:"Limpeza de pele para o casal", category:"lazer", price:187.03, desc:"", img:"https://i.pinimg.com/736x/39/6e/91/396e91b7262522e63dcc6e09e7fa3246.jpg" },
+  { id:61, name:"Livros para noiva ler e não surtar com o marido", category:"lazer", price:109.16, desc:"", img:"https://i.pinimg.com/736x/e9/18/3d/e9183da969be0569872c65b382d3b317.jpg" },
+  { id:62, name:"Manete para o noivo descansar no domingo", category:"lazer", price:436.23, desc:"", img:"https://i.pinimg.com/736x/18/b9/ad/18b9ade66a8661e81d893f7588f109aa.jpg" },
+  { id:63, name:"Manicure, pedicure e depilação", category:"lazer", price:298.13, desc:"", img:"https://i.pinimg.com/736x/ca/ee/87/caee87ba7aaabbb2f9fffc3ae75ad6f8.jpg" },
+  { id:64, name:"Maquiagem", category:"lazer", price:228.56, desc:"", img:"https://i.pinimg.com/736x/e6/14/65/e614655618abec3ca957b66e2a233c8f.jpg" },
+
+  { id:65,  name:"Mesa de cabeceira", category:"cama", price:160.03, desc:"", img:"https://i.pinimg.com/736x/6f/39/f5/6f39f592f39dddabe5d9b9b174583e36.jpg" },
+
+  { id:66,  name:"Mini processador Mondial premium MP-01 preto", category:"cozinha", price:129.06, desc:"", img:"https://i.pinimg.com/736x/71/9d/8a/719d8a2c96f50bb86a94ea0544618b98.jpg" },
+
+  { id:67,  name:"Mini taças sobremesa - 12 peças", category:"cozinha", price:75.93, desc:"", img:"https://i.pinimg.com/736x/d9/3b/75/d93b758205f61091c6a62222353da9bf.jpg" },
+
+  { id:68,  name:"Não deixar faltar um docinho", category:"cozinha", price:90.47, desc:"", img:"https://i.pinimg.com/736x/f4/f1/49/f4f149f8c97fa7526fe4ed867dfd0ab6.jpg" },
+
+  { id:69,  name:"Noite do fondue", category:"lazer", price:228.56, desc:"", img:"https://i.pinimg.com/736x/be/db/ec/bedbec8fb0658d85804cee8e7755986b.jpg" },
+
+  { id:70,  name:"Organizadores de gaveta", category:"casa", price:57.24, desc:"", img:"https://i.pinimg.com/1200x/76/9e/3d/769e3d0eac397e8ef382068a53562692.jpg" },
+
+  { id:71,  name:"Painel para tv 42 polegadas", category:"casa", price:160.03, desc:"", img:"https://i.pinimg.com/736x/08/41/53/0841538315aad7e44040cac517a89365.jpg" },
+
+  { id:72,  name:"Panela elétrica Mondial cooker PE-01 - 1.2L", category:"cozinha", price:123.69, desc:"", img:"https://i.pinimg.com/736x/0b/4c/fd/0b4cfd33220ba767f4084aaa2054c2e2.jpg" },
+
+  { id:73,  name:"Panelas com sabo removível", category:"cozinha", price:228.56, desc:"", img:"https://i.pinimg.com/1200x/4c/04/76/4c04767acef1e6f7f202a9a3b2095837.jpg" },
+
+  { id:74,  name:"Pegador de gelo", category:"cozinha", price:43.74, desc:"", img:"https://i.pinimg.com/736x/3c/32/67/3c326757c31bb5ee219808c15d2bfc6b.jpg" },
+
+  { id:75,  name:"Penteadeira branca", category:"casa", price:514.10, desc:"", img:"https://i.pinimg.com/736x/f3/98/a5/f398a5d87593e17df6146712e09bd954.jpg" },
+
+  { id:76,  name:"Penteado", category:"lazer", price:228.56, desc:"", img:"https://i.pinimg.com/736x/6e/0f/3b/6e0f3b13264b9f2554b9e7c8fd3a25da.jpg" },
+
+  { id:77,  name:"Porta condimentos com suporte", category:"cozinha", price:76.97, desc:"", img:"https://i.pinimg.com/736x/9d/ca/8a/9dca8a2bb38310ed340416ac3e221473.jpg" },
+
+  { id:78,  name:"Porta copos madeira - 6 peças", category:"cozinha", price:130.96, desc:"", img:"https://i.pinimg.com/736x/89/8f/e5/898fe5f25ffa7887b6207bb6fc22594c.jpg" },
+
+  { id:79,  name:"Porta shampoo e condicionador inox", category:"cama", price:72.30, desc:"", img:"https://i.pinimg.com/1200x/14/fb/8f/14fb8f67db7977ef177ffe848e836d73.jpg" },
+
+  { id:80,  name:"Potes herméticos", category:"cozinha", price:62.43, desc:"", img:"https://i.pinimg.com/1200x/d5/1d/0e/d51d0e34c0ed17591d9fe37653456c57.jpg" },
+
+  { id:81,  name:"Processador de alimentos", category:"cozinha", price:352.12, desc:"", img:"https://i.pinimg.com/736x/18/6e/ef/186eef56b62382d14f508b8e0ed0f4f6.jpg" },
+
+  { id:82,  name:"Sapateira", category:"casa", price:504.75, desc:"", img:"https://i.pinimg.com/736x/9a/d9/1d/9ad91d7bd624afd64f743dda59fb8380.jpg" },
+
+  { id:83,  name:"Smart TV UHD 4K 55 - RU7100", category:"casa", price:3595.81, desc:"", img:"https://i.pinimg.com/1200x/a3/60/99/a3609951b37997693a4234ced0600b56.jpg" },
+
+  { id:84,  name:"Sofá 3 lugares linho cinza", category:"casa", price:1263.76, desc:"", img:"https://i.pinimg.com/1200x/45/6f/9c/456f9cbb71d3760ac04690dc3c63194c.jpg" },
+
+  { id:85,  name:"Só pra não dizer que eu dei nada", category:"casa", price:76, desc:"", img:"https://i.pinimg.com/736x/4a/92/6a/4a926afaceea552f99025674a527a697.jpg" },
+
+   { id:86,  name:"Tábua de frios", category:"cozinha", price:42, desc:"", img:"https://i.pinimg.com/736x/04/61/df/0461dfbbefcb3be1fb457e680be2786b.jpg" },
+
+   { id:87,  name:"Taça de sobremesa", category:"cozinha", price:56.20, desc:"", img:"https://i.pinimg.com/736x/44/5e/4f/445e4f492b0d0bca101783abb3412199.jpg" },
+
+   { id:88,  name:"Toalha de mesa térmica impermeável", category:"cozinha", price:112.27, desc:"", img:"https://i.pinimg.com/736x/fb/04/9f/fb049f8c688c0785ca9f94e936568a89.jpg" },
+
+   { id:89,  name:"Toalha de mesa", category:"cozinha", price:112.27, desc:"", img:"https://i.pinimg.com/736x/5e/03/cc/5e03cce228518cb2048c3c2a4cf08f25.jpg" },
+
+   { id:90,  name:"Uber para se acaso perdemos o horário de volta", category:"viagem", price:124.73, desc:"", img:"https://i.pinimg.com/1200x/c1/e2/07/c1e20701c3f9dc97deb9d021126a9c42.jpg" },
+
+   { id:91,  name:"Um bom vinho para um final de tarde", category:"lazer", price:201.37, desc:"", img:"https://i.pinimg.com/1200x/00/8d/58/008d58d45f3f2266d280bb805a3bf101.jpg" },
+
+   { id:92,  name:"Um fone de ouvido para não ouvir o noivo cantando no chuveiro", category:"lazer", price:84.24, desc:"", img:"https://i.pinimg.com/736x/a2/62/c5/a262c52312a653bdd30065135fdfae99.jpg" },
+
+   { id:93,  name:"Vale porção", category:"lazer", price:89.43, desc:"", img:"https://i.pinimg.com/736x/3b/e2/88/3be2886141a8bea521fcddd1350e931e.jpg" },
+
+   { id:94,  name:"Vale presente", category:"lazer", price:436.23, desc:"", img:"https://i.pinimg.com/1200x/ce/3a/74/ce3a740f6bae3dea2f8a98fcf7801475.jpg" },
+
+   { id:95,  name:"Vale presente", category:"lazer", price:145.50, desc:"", img:"https://i.pinimg.com/1200x/ce/3a/74/ce3a740f6bae3dea2f8a98fcf7801475.jpg" },
+
+   { id:96,  name:"Vale presente", category:"lazer", price:228.56, desc:"", img:"https://i.pinimg.com/1200x/ce/3a/74/ce3a740f6bae3dea2f8a98fcf7801475.jpg" },
+
+   { id:97,  name:"Vale presente", category:"lazer", price:135.11, desc:"", img:"https://i.pinimg.com/1200x/ce/3a/74/ce3a740f6bae3dea2f8a98fcf7801475.jpg" },
+
+   { id:98,  name:"Vale presente", category:"lazer", price:78.01, desc:"", img:"https://i.pinimg.com/1200x/ce/3a/74/ce3a740f6bae3dea2f8a98fcf7801475.jpg" },
+   { id:99,  name:"Ventilador de mesa 40 cm silence force", category:"casa", price:101.52, desc:"", img:"https://i.pinimg.com/736x/4e/73/d2/4e73d2bb932f0e0408b08e3eb7a9ad3c.jpg" },
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
 ];
 
-function formatPrice(p) {
-  return p === 0 ? "Contribuição livre" : p.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-}
+function fmt(v){ return v===0?'Contribuição livre':'R$ '+v.toFixed(2).replace('.',','); }
 
-function pixIcon(size=11) {
-  return `<svg viewBox="0 0 512 512" width="${size}" height="${size}" fill="currentColor"><path d="M242.4 292.5C247.8 287.1 257.1 287.1 262.5 292.5L339.5 369.5C353.7 383.7 372.6 391.5 392.6 391.5H407.7L310.6 488.6C280.3 518.9 231.1 518.9 200.8 488.6L103.3 391.2H118.4C138.4 391.2 157.3 383.4 171.5 369.2L242.4 292.5zM262.5 219.5C257.1 224.9 247.8 224.9 242.4 219.5L171.5 142.5C157.3 128.3 138.4 120.5 118.4 120.5H103.3L200.7 23.4C231 -6.9 280.2 -6.9 310.5 23.4L407.6 120.5H392.6C372.6 120.5 353.7 128.3 339.5 142.5L262.5 219.5zM112 143.9C126.1 143.9 139.5 149.5 149.4 159.5L220.3 236.5C233.7 249.9 278.3 249.9 291.7 236.5L362.6 159.5C372.5 149.5 385.9 143.9 400 143.9H422.7L488.6 209.8C518.9 240.1 518.9 289.3 488.6 319.6L422.7 385.5H400C385.9 385.5 372.5 379.9 362.6 369.9L291.7 292.9C285 286.2 276.5 282.9 268 282.9C259.5 282.9 251 286.2 244.3 292.9L173.4 369.9C163.5 379.9 150.1 385.5 136 385.5H113.3L47.4 319.6C17.1 289.3 17.1 240.1 47.4 209.8L113.3 143.9H112z"/></svg>`;
-}
-
-function render() {
-  document.getElementById('giftsGrid').innerHTML = gifts.map(g => `
-    <div class="gift-card" onclick="openModal(${g.id})">
+function renderGifts(filter){
+  const grid=document.getElementById('giftsGrid');
+  const empty=document.getElementById('emptyState');
+  const list=filter==='all'?gifts:gifts.filter(g=>g.category===filter);
+  grid.querySelectorAll('.gift-card').forEach(c=>c.remove());
+  if(!list.length){ empty.classList.add('show'); updateResultBar(0,filter); return; }
+  empty.classList.remove('show');
+  list.forEach(g=>{
+    const price=fmt(g.price);
+    const catLabel=CAT[g.category]||'';
+    const card=document.createElement('div');
+    card.className='gift-card visible';
+    card.innerHTML=`
+      ${g.isNew?'<div class="new-badge">Novo</div>':''}
       <div class="gift-img-wrap">
-        <img src="${g.img}" alt="${g.name}" loading="lazy" onerror="this.style.opacity='.3'">
-        <div class="pix-badge">${pixIcon()} PIX</div>
+        <img src="${g.img}" alt="${g.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600&q=60'">
+        <div class="pix-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>PIX</div>
       </div>
-      ${g.isNew ? '<div class="new-badge">Destaque</div>' : ''}
       <div class="gift-body">
-        <div class="gift-category-tag">${CAT[g.category]}</div>
+        <div class="gift-category-tag">${catLabel}</div>
         <div class="gift-name">${g.name}</div>
-        <div class="gift-desc">${g.desc}</div>
+        ${g.desc?`<div class="gift-desc">${g.desc}</div>`:''}
         <div class="gift-footer">
-          <div class="gift-price"><span>valor</span>${formatPrice(g.price)}</div>
+          <div class="gift-price"><span>valor</span>${price}</div>
           ${g.custom
-            ? `<button class="btn-contribuir" onclick="event.stopPropagation();openModal(${g.id})">💛 Contribuir</button>`
-            : `<button class="btn-pix" onclick="event.stopPropagation();openModal(${g.id})">${pixIcon()} Ver PIX</button>`
+            ?`<button class="btn-contribuir" onclick="openModal(event,'${g.name.replace(/'/g,"\\'")}','${price}')">Contribuir ♥</button>`
+            :`<button class="btn-pix" onclick="openModal(event,'${g.name.replace(/'/g,"\\'")}','${price}')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>Presentear</button>`
           }
         </div>
-      </div>
-    </div>
-  `).join('');
+      </div>`;
+    grid.appendChild(card);
+  });
+  updateResultBar(list.length,filter);
 }
 
-function openModal(giftId) {
-  const g = gifts.find(x => x.id === giftId);
-  if (!g) return;
-  document.getElementById('modalGiftName').textContent  = g.name;
-  document.getElementById('modalGiftPrice').textContent = formatPrice(g.price);
-  const copyBtn = document.getElementById('copyKeyBtn');
-  copyBtn.textContent = 'Copiar';
-  copyBtn.classList.remove('copied');
-  document.getElementById('pixModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+function updateResultBar(n,filter){
+  const t=document.getElementById('resultText');
+  const label=filter==='all'?'todos os presentes':CAT[filter]||filter;
+  t.textContent=n+' '+(n===1?'presente':'presentes')+' · '+label;
 }
 
-function closeModal() {
-  document.getElementById('pixModal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function handleOverlayClick(e) {
-  if (e.target === document.getElementById('pixModal')) closeModal();
-}
-
-function copyText(elId, btnId) {
-  const text = document.getElementById(elId).textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById(btnId);
-    btn.textContent = 'Copiado ✓';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2200);
+function updateCounts(){
+  const cats=['all','cozinha','viagem','casa','cama','lazer'];
+  cats.forEach(c=>{
+    const el=document.getElementById('count-'+c);
+    if(el) el.textContent=c==='all'?gifts.length:gifts.filter(g=>g.category===c).length;
   });
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+function setTab(btn,filter){
+  document.querySelectorAll('.tab-btn').forEach(b=>{ b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+  btn.classList.add('active'); btn.setAttribute('aria-selected','true');
+  renderGifts(filter);
+}
 
-render();
+function openModal(e,name,price){ e.stopPropagation(); document.getElementById('modalGiftName').textContent=name; document.getElementById('modalGiftPrice').textContent=price; document.getElementById('pixModal').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(){ document.getElementById('pixModal').classList.remove('open'); document.body.style.overflow=''; }
+function handleOverlayClick(e){ if(e.target===document.getElementById('pixModal')) closeModal(); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+function copyText(spanId,btnId){
+  const text=document.getElementById(spanId).textContent;
+  navigator.clipboard.writeText(text).then(()=>{ const btn=document.getElementById(btnId); btn.textContent='Copiado!'; btn.classList.add('copied'); setTimeout(()=>{ btn.textContent='Copiar'; btn.classList.remove('copied'); },2000); });
+}
+
+updateCounts();
+renderGifts('all');
 </script>
 </body>
 </html>
